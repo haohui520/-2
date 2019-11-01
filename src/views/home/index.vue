@@ -5,7 +5,7 @@
       <div class="logo" :class="{smallLogo:!isOpen}"></div>
       <!-- 导航菜单 -->
       <el-menu
-        default-active="/"
+         :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -53,13 +53,15 @@
         <!-- 下拉菜单组件 -->
         <el-dropdown class="dropdown">
           <span class="el-dropdown-link">
-            <img class="headIcon" src="../../assets/avatar.jpg" alt />
-            <span class="userName">用户名称</span>
+            <!-- 渲染 -->
+            <img class="headIcon" :src="userInfo.photo" alt />
+            <span class="userName">{{userInfo.name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <!-- 绑定点击事件 事件修饰符：prevent once stop  native意思是把事件绑定在原生dom上-->
+            <el-dropdown-item icon="el-icon-setting" @click.native="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" @click.native="unlock">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -72,16 +74,38 @@
 </template>
 
 <script>
+// 传入模板
+import local from '@/utils/local'
 export default {
   data () {
     return {
-      isOpen: true
+      isOpen: true,
+      // 声明数据
+      userInfo: {}
     }
+  },
+  created () {
+    const user = local.getUser() || {}
+    //  获取用户信息
+    // 获取名字
+    this.userInfo.name = user.name
+    // 获取照片
+    this.userInfo.photo = user.photo
   },
   methods: {
     toggleMenu () {
       // 切换左菜单 展开与收起
       this.isOpen = !this.isOpen
+    },
+    // 事件根本没有触发  click事件
+    // 给组件绑定事件，如果组件不支持，事件不会触发。
+    // 把事件绑定在 组件解析后的原生dom上
+    setting () {
+      this.$router.push('/setting')
+    },
+    unlock () {
+      local.delUser()
+      this.$router.push('/login')
     }
   }
 }
