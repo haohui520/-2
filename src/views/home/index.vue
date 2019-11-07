@@ -5,7 +5,7 @@
       <div class="logo" :class="{smallLogo:!isOpen}"></div>
       <!-- 导航菜单 -->
       <el-menu
-         :default-active="$route.path"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -76,12 +76,16 @@
 <script>
 // 传入模板
 import local from '@/utils/local'
+import eventBus from '@/eventBus'
 export default {
   data () {
     return {
       isOpen: true,
-      // 声明数据
-      userInfo: {}
+      // 声明数据 如果是响应式数据 应该先声明
+      userInfo: {
+        name: '',
+        photo: ''
+      }
     }
   },
   created () {
@@ -91,6 +95,15 @@ export default {
     this.userInfo.name = user.name
     // 获取照片
     this.userInfo.photo = user.photo
+    // 绑定事件  接收修改的name数据
+    // 绑定事件  接收修改的name数据
+    eventBus.$on('updateName', (name) => {
+      this.userInfo.name = name
+    })
+    // 绑定事件  接收修改的photo数据
+    eventBus.$on('updatePhoto', (photo) => {
+      this.userInfo.photo = photo
+    })
   },
   methods: {
     toggleMenu () {

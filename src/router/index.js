@@ -7,6 +7,10 @@ import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import Article from '@/views/article'
 import Image from '@/views/image'
+import Publish from '@/views/publish'
+import Comment from '@/views/comment'
+import Setting from '@/views/setting'
+import Fans from '@/views/fans'
 
 Vue.use(VueRouter)
 
@@ -36,6 +40,26 @@ const router = new VueRouter({
         {
           path: '/image',
           component: Image
+        },
+        // 发布文章
+        {
+          path: '/publish',
+          component: Publish
+        },
+        // 评论管理
+        {
+          path: '/comment',
+          component: Comment
+        },
+        // 个人设置
+        {
+          path: '/setting',
+          component: Setting
+        },
+        //  粉丝管理
+        {
+          path: '/fans',
+          component: Fans
         }
       ]
     },

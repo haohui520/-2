@@ -14,7 +14,8 @@
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
         <!-- 添加素材按钮 -->
-        <el-button type="success" size="small" style="float:right">添加素材</el-button>
+        <!-- 添加点击事件 -->
+        <el-button @click="open" type="success" size="small" style="float:right">添加素材</el-button>
         <!-- 素材列表布局 -->
         <div class="img_list">
           <!-- 遍历素材列表 id url接口 -->
@@ -49,10 +50,30 @@
         <!-- current-change 事件：当页码改变（点击页码按钮，上一页，下一页）就执行  参数当前改变后的页码-->
       </div>
     </el-card>
+    <!-- 弹出对话框 插入饿了么上传组件 -->
+    <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
+      <el-upload
+        class="avatar-uploader"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        :headers="headers"
+        name="image"
+        :on-success="handleSuccess"
+        :show-file-list="false"
+      >
+        <!-- 设置请求头 上传字段名后端参数 文件上传之后成功的钩子:带自定义函数 -->
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+// 引入less文件
+// 样式在里写：当前组件下生效（在模版中能看到的标签就是当前组件）
+// 使用其他组件：组件内部是存在标签
+// 引入用户信息
+import locol from '@/utils/local'
 export default {
   data () {
     return {
@@ -65,7 +86,15 @@ export default {
       // 依赖数据素材列表
       images: [],
       // 总条数为0
-      total: 0
+      total: 0,
+      // 对话框控制显示隐藏
+      dialogVisible: false,
+      // 上传成功后的图片地址
+      imageUrl: null,
+      // 在头部里面加上token 用户信息
+      headers: {
+        Authorization: `Bearer ${locol.getUser().token}`
+      }
     }
   },
   created () {
@@ -73,6 +102,26 @@ export default {
     this.getImages()
   },
   methods: {
+    // 上传图片成功
+    handleSuccess (res) {
+      // res就是响应体 后端获取图片地址data,url
+      this.imageUrl = res.data.url
+      this.$message.success('上传成功')
+      window.setTimeout(() => {
+        // 关闭对话框
+        this.dialogVisible = false
+        //  更新列表
+        this.getImages()
+      }, 2000)
+    },
+    // 写入一个open方法 打开的回调打开对话框的时候图片重置为null
+    // 获取列表数据
+    open () {
+      // 打开对话框
+      this.dialogVisible = true
+      // 重置图片
+      this.imageUrl = null
+    },
     async getImages () {
       // params 参数对象
       const {
