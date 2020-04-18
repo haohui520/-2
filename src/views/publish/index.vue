@@ -11,6 +11,7 @@
           <el-input v-model="articleForm.title" style="width:400px"></el-input>
         </el-form-item>
         <el-form-item label="内容：">
+          <!-- options配置的意思  富文本 -->
           <quill-editor v-model="articleForm.content" :options="editorOption"></quill-editor>
         </el-form-item>
         <el-form-item label="封面：">

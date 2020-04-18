@@ -1,7 +1,8 @@
 <template>
   <el-container class="container">
+    <!-- 当导航为trun时展开 不是则收起 -->
     <el-aside :width="isOpen?'200px':'64px'">
-      <!-- logo -->
+      <!-- logo 收起时触发smalla-->
       <div class="logo" :class="{smallLogo:!isOpen}"></div>
       <!-- 导航菜单 -->
       <el-menu
@@ -53,7 +54,7 @@
         <!-- 下拉菜单组件 -->
         <el-dropdown class="dropdown">
           <span class="el-dropdown-link">
-            <!-- 渲染 -->
+            <!--头像和名字 渲染 -->
             <img class="headIcon" :src="userInfo.photo" alt />
             <span class="userName">{{userInfo.name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -149,6 +150,7 @@ export default {
     border-bottom: 1px solid #ddd;
     .icon {
       font-size: 30px;
+      // 垂直居中
       vertical-align: middle;
     }
     .text {
@@ -163,6 +165,7 @@ export default {
         vertical-align: middle;
       }
       .userName {
+        // 加粗
         font-weight: bold;
         vertical-align: middle;
         margin-left: 5px;

@@ -6,7 +6,7 @@ import JSONBIG from 'json-bigint'
 // 对axios进行配置
 // 基准地址
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
-// ... 很多配置
+// ... 很多配置 删除
 axios.defaults.transformResponse = [(data) => {
   // 对data进行格式转换  data就是后台响应的json字符串
   // 如果没数据呢？data === null 使用JSONBIG.parse(null) 报错
@@ -17,7 +17,7 @@ axios.defaults.transformResponse = [(data) => {
   }
 }]
 
-// config是一个配置
+// 请求拦截器  config是一个配置 看axios文档
 axios.interceptors.request.use((config) => {
   // 如果拿不到值会得到一个空对象 也不会报错
   const user = local.getUser() || {}

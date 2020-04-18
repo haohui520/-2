@@ -6,6 +6,8 @@
       <!-- logo -->
       <img src="../../assets/logo_index.png" width="200px" alt />
       <!-- 表单 -->
+      <!-- 表单容器  ref="form" 操作dom|组件 :model="form"
+      绑定表单数据对象  label-width="80px" 表单输入框前的文字的宽度  status-icon图标 -->
       <el-form ref="loginForm" status-icon :model="loginForm" :rules="loginRules">
         <el-form-item prop="mobile">
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
@@ -52,7 +54,9 @@ export default {
       loginRules: {
         mobile: [
           // type: date|email|url  支持  不支持手机号
+          // 表单规则配置
           { required: true, message: '请输入手机号', trigger: 'blur' },
+          // 失去焦点触发
           { validator: checkMobile, trigger: 'blur' }
         ],
         code: [

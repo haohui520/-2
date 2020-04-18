@@ -8,7 +8,7 @@
         <my-bread>内容管理</my-bread>
       </div>
       <!-- 表单 -->
-      <!-- small 缩小 -->
+      <!-- small 缩小 写入文字需要带label -->
       <el-form label-width="80px" size="small">
         <el-form-item label="状态">
           <!-- status文章状态 -->
@@ -22,9 +22,9 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道">
-            <!-- v-model本质： 绑定value属性  绑定了input事件 -->
-            <!-- 频道组件 -->
-             <my-channel v-model="reqParams.channel_id"></my-channel>
+          <!-- v-model本质： 绑定value属性  绑定了input事件 -->
+          <!-- 频道组件 -->
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期">
           <!-- v-model 绑定的数组  [起始时间,结束时间] -->
@@ -87,7 +87,7 @@
               plain
               circle
             ></el-button>
-            <el-button type="danger" icon="el-icon-delete" plain circle></el-button>
+            <el-button @click="del(scope.row.id)" type="danger" icon="el-icon-delete" plain circle></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -211,8 +211,16 @@ export default {
     toEdit (id) {
       //  query就是传参 后面Id是对象 传几个都可以
       this.$router.push({ path: '/publish', query: { id } })
-    }
+    },
     // 删除组件
+    async del (id) {
+      // 请求
+      await this.$http.delete(`articles/${id}`)
+      // 提示
+      this.$message.success('删除文章成功')
+      // 更新列表
+      this.getArticles()
+    }
   }
 }
 </script>

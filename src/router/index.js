@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
   if (user && user.token) {
     next()
   } else {
-    // to.path跳转到那个路由对象
+    // to.path跳转到那个路由对象 跳到登录就放行
     if (to.path === '/login') {
       next()
     } else {
